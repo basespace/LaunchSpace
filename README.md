@@ -39,6 +39,11 @@ Workflow overview
 
 LaunchSpace uses a local configuration database (using sqlite3) to store information about projects and apps, linking these to their corresponding entities in BaseSpace. Command line tools allow the creation of samples (either individually or in batches) within projects where each sample can have one or more linked app. A Launcher tool queries BaseSpace for each sample and project to see whether there is any data in BaseSpace under that sample name. If there is and it meets yield requirements, the associated app is launched on that sample data. Once launched, a BaseSpace AppSessionId is stored locally, linking the sample app run to its associated BaseSpace entity. The Tracker uses this information to track the app to completion. Once completed, the same AppSessionId is used by the QCChecker to download an appropriate metrics file and compare this to a set of thresholds for the relevant app, to mark this analysis as qc-passed or qc-failed. The Downloader then downloads a specified group of files to local storage for delivery or further analysis.
 
+Make log directory
+-----------------------------------------
+
+The cron-based tools of LaunchSpace need a log directory to write into. By default, this is $LAUNCHSPACE/log but this empty directory is not present in the git repository so you will need to create it. You can also alter the log directory by editing $LAUNCHSPACE/etc/config.py
+
 Initialise local configuration database
 -----------------------------------------
 

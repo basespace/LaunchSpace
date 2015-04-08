@@ -10,19 +10,9 @@
       "Content": "{{ ApiVersion }}/projects/{{ ProjectID }} "
     },     
     {
-      "Name": "Input.Projects",
-      "Type": "project[]",
-      "items": [ "{{ ApiVersion }}/projects/{{ ProjectID }}" ]
-    },     
-    {
       "Name": "Input.sample-id",
       "Type": "sample[]",
       "items": [ "{{ ApiVersion }}/samples/{{ SampleID }} " ]
-    },     
-    {
-      "Name": "Input.Samples",
-      "Type": "sample[]",
-      "items": [ "{{ ApiVersion }}/samples/{{ SampleID }}" ]
     },     
     {
       "Name": "Input.FlagPCRDuplicates-id",

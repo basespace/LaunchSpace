@@ -1,0 +1,10 @@
+Dependencies:
+===
+
+- A working Python BaseSpace SDK installation
+- sqlite3
+- Python 2.7
+- Python modules:
+    - peewee
+    - jinja2
+    - sqlite

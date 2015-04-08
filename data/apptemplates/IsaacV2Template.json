@@ -1,0 +1,55 @@
+{
+  "Name": "{{ SampleName }} {{ AppName }}",
+  "StatusSummary": "AutoLaunch",
+  "AutoStart": true,
+  "Properties":
+  [
+    {
+      "Name": "Input.project-id",
+      "Type": "project",
+      "Content": "{{ ApiVersion }}/projects/{{ ProjectID }} "
+    },     
+    {
+      "Name": "Input.Projects",
+      "Type": "project[]",
+      "items": [ "{{ ApiVersion }}/projects/{{ ProjectID }}" ]
+    },     
+    {
+      "Name": "Input.sample-id",
+      "Type": "sample[]",
+      "items": [ "{{ ApiVersion }}/samples/{{ SampleID }} " ]
+    },     
+    {
+      "Name": "Input.Samples",
+      "Type": "sample[]",
+      "items": [ "{{ ApiVersion }}/samples/{{ SampleID }}" ]
+    },     
+    {
+      "Name": "Input.FlagPCRDuplicates-id",
+      "Type": "string[]",
+      "items": [ ]
+    },     
+    {
+      "Content": "RefSeq",
+      "Name": "Input.AnnotationSource",
+      "Type": "string"
+    },
+    {
+      "Name": "Input.genome-id",
+      "Type": "string",
+      "Content": "Human"
+    },
+    {
+      "Name": "Input.GQX-id",
+      "Type": "string",
+      "Content": "30"
+    },
+    {
+      "Content": "10",
+      "Name": "Input.StrandBias-id",
+      "Type": "string"
+    }
+
+  ]
+}
+

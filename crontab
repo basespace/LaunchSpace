@@ -1,0 +1,12 @@
+# LaunchSpace cron jobs
+PYTHON_EXE=
+SCRIPT_ROOT=
+
+# launcher launches apps on BaseSpace
+#16 * * * * $SCRIPT_ROOT/Launcher.py
+# tracker tracks job status in BaseSpace
+47 * * * * $SCRIPT_ROOT/Tracker.py
+# qcchecker pulls down metrics file from appropriate app runs and evaluates against thresholds
+48 * * * * $SCRIPT_ROOT/QCChecker.py
+# downloader pulls down deliverable files from qc-passed apps
+49 * * * * $SCRIPT_ROOT/Downloader.py

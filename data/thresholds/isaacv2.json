@@ -1,0 +1,36 @@
+{
+    "Fragment Length Median" : {
+        "operator" : "ge",
+        "threshold" : 240
+    },
+
+    "MismatchRate R1" : {
+        "operator" : "le",
+        "threshold" : 1
+    },
+
+    "MismatchRate R2" : {
+        "operator" : "le",
+        "threshold" : 1.5
+    },
+
+    "Percent Q30 R1" : {
+        "operator" : "ge",
+        "threshold" : 0.80
+    },
+
+    "Percent Q30 R2" : {
+        "operator" : "ge",
+        "threshold" : 0.80
+    },
+
+    "SNV Het/Hom ratio" : {
+        "operator" : "le",
+        "threshold" : 2.05
+    },
+
+    "Percent duplicate paired reads" : {
+        "operator" : "le",
+        "threshold" : 5
+    }
+}

@@ -1,0 +1,134 @@
+"GenoLogics Life Sciences Software - a LIMS for the Next-Gen Omics Lab | #2302 - 4464 Markham Street, Victoria, BC  Canada, V8Z 7X8 | 1.250.483.7011"																		
+																		
+																		
+			Clarity LIMS X Sample Spreadsheet and Instructions															
+																		
+You can use GenoLogics' sample import spreadsheet to import sample information into Clarity LIMS.																		
+To get started:																		
+1. Set up your Clarity LIMS system with custom sample-level fields (UDFs).																		
+2. Create a sample spreadsheet using these instructions.																		
+3. Test the sample spreadsheet: use it to import test samples.																		
+4. Provide the sample spreadsheet to your external collaborators for them to complete and submit.																		
+																		
+<TABLE HEADER>																		
+Sample/Name	Container/Type	Container/Name	Sample/Well Location	UDF/Is Tumor Sample	UDF/Req. Coverage (Gb)	UDF/TAT Gate Date	UDF/GroupID	UDF/Match Sample IDs	UDF/Analysis									
+</TABLE HEADER>																		
+<SAMPLE ENTRIES>																		
+LP001-DNA_A1	96 well plate	LP001-DNA	A:1	TRUE	105	31/12/2015	1	LP001-DNA_B1	tumournormal									
+LP001-DNA_B1	96 well plate	LP001-DNA	B:1	FALSE	105	31/12/2015	1	LP001-DNA_A1	tumournormal									
+LP001-DNA_C1	96 well plate	LP001-DNA	C:1	TRUE	105	31/12/2015	2	LP001-DNA_D1	tumournormal									
+LP001-DNA_D1	96 well plate	LP001-DNA	D:1	FALSE	105	31/12/2015	2	LP001-DNA_C1	tumournormal									
+LP001-DNA_E1	96 well plate	LP001-DNA	E:1	TRUE	105	31/12/2015	3	LP001-DNA_F1	tumournormal									
+LP001-DNA_F1	96 well plate	LP001-DNA	F:1	FALSE	105	31/12/2015	3	LP001-DNA_E1	tumournormal									
+LP001-DNA_G1	96 well plate	LP001-DNA	G:1	TRUE	105	31/12/2015		LP001-DNA_H1	tumournormal									
+LP001-DNA_H1	96 well plate	LP001-DNA	H:1	FALSE	105	31/12/2015		LP001-DNA_G1	tumournormal									
+LP001-DNA_A2	96 well plate	LP001-DNA	A:2	TRUE	105	31/12/2015		LP001-DNA_B2	tumournormal									
+LP001-DNA_B2	96 well plate	LP001-DNA	B:2	FALSE	105	31/12/2015		LP001-DNA_A2	tumournormal									
+LP001-DNA_C2	96 well plate	LP001-DNA	C:2	TRUE	105	31/12/2015		LP001-DNA_D2	tumournormal									
+LP001-DNA_D2	96 well plate	LP001-DNA	D:2	FALSE	105	31/12/2015		LP001-DNA_C2	tumournormal									
+LP001-DNA_E2	96 well plate	LP001-DNA	E:2	TRUE	105	31/12/2015		LP001-DNA_F2	tumournormal									
+LP001-DNA_F2	96 well plate	LP001-DNA	F:2	FALSE	105	31/12/2015		LP001-DNA_E2	tumournormal									
+LP001-DNA_G2	96 well plate	LP001-DNA	G:2	TRUE	105	31/12/2015		LP001-DNA_H2	tumournormal									
+LP001-DNA_H2	96 well plate	LP001-DNA	H:2	FALSE	105	31/12/2015		LP001-DNA_G2	tumournormal									
+LP001-DNA_A3	96 well plate	LP001-DNA	A:3	TRUE	105	31/12/2015		LP001-DNA_B3	tumournormal									
+LP001-DNA_B3	96 well plate	LP001-DNA	B:3	FALSE	105	31/12/2015		LP001-DNA_A3	tumournormal									
+LP001-DNA_C3	96 well plate	LP001-DNA	C:3	TRUE	105	31/12/2015		LP001-DNA_D3	tumournormal									
+LP001-DNA_D3	96 well plate	LP001-DNA	D:3	FALSE	105	31/12/2015		LP001-DNA_C3	tumournormal									
+LP001-DNA_E3	96 well plate	LP001-DNA	E:3	TRUE	105	31/12/2015		LP001-DNA_F3	tumournormal									
+LP001-DNA_F3	96 well plate	LP001-DNA	F:3	FALSE	105	31/12/2015		LP001-DNA_E3	tumournormal									
+LP001-DNA_G3	96 well plate	LP001-DNA	G:3	TRUE	105	31/12/2015		LP001-DNA_H3	tumournormal									
+LP001-DNA_H3	96 well plate	LP001-DNA	H:3	FALSE	105	31/12/2015		LP001-DNA_G3	tumournormal									
+LP001-DNA_A4	96 well plate	LP001-DNA	A:4	TRUE	105	31/12/2015		LP001-DNA_B4	tumournormal									
+LP001-DNA_B4	96 well plate	LP001-DNA	B:4	FALSE	105	31/12/2015		LP001-DNA_A4	tumournormal									
+LP001-DNA_C4	96 well plate	LP001-DNA	C:4	TRUE	105	31/12/2015		LP001-DNA_D4	tumournormal									
+LP001-DNA_D4	96 well plate	LP001-DNA	D:4	FALSE	105	31/12/2015		LP001-DNA_C4	tumournormal									
+LP001-DNA_E4	96 well plate	LP001-DNA	E:4	TRUE	105	31/12/2015		LP001-DNA_F4	tumournormal									
+LP001-DNA_F4	96 well plate	LP001-DNA	F:4	FALSE	105	31/12/2015		LP001-DNA_E4	tumournormal									
+LP001-DNA_G4	96 well plate	LP001-DNA	G:4	TRUE	105	31/12/2015		LP001-DNA_H4	tumournormal									
+LP001-DNA_H4	96 well plate	LP001-DNA	H:4	FALSE	105	31/12/2015		LP001-DNA_G4	tumournormal									
+LP001-DNA_A5	96 well plate	LP001-DNA	A:5	TRUE	105	31/12/2015		LP001-DNA_B5	tumournormal									
+LP001-DNA_B5	96 well plate	LP001-DNA	B:5	FALSE	105	31/12/2015		LP001-DNA_A5	tumournormal									
+LP001-DNA_C5	96 well plate	LP001-DNA	C:5	TRUE	105	31/12/2015		LP001-DNA_D5	tumournormal									
+LP001-DNA_D5	96 well plate	LP001-DNA	D:5	FALSE	105	31/12/2015		LP001-DNA_C5	tumournormal									
+LP001-DNA_E5	96 well plate	LP001-DNA	E:5	TRUE	105	31/12/2015		LP001-DNA_F5	tumournormal									
+LP001-DNA_F5	96 well plate	LP001-DNA	F:5	FALSE	105	31/12/2015		LP001-DNA_E5	tumournormal									
+LP001-DNA_G5	96 well plate	LP001-DNA	G:5	TRUE	105	31/12/2015		LP001-DNA_H5	tumournormal									
+LP001-DNA_H5	96 well plate	LP001-DNA	H:5	FALSE	105	31/12/2015		LP001-DNA_G5	tumournormal									
+LP001-DNA_A6	96 well plate	LP001-DNA	A:6	TRUE	105	31/12/2015		LP001-DNA_B6	tumournormal									
+LP001-DNA_B6	96 well plate	LP001-DNA	B:6	FALSE	105	31/12/2015		LP001-DNA_A6	tumournormal									
+LP001-DNA_C6	96 well plate	LP001-DNA	C:6	TRUE	105	31/12/2015		LP001-DNA_D6	tumournormal									
+LP001-DNA_D6	96 well plate	LP001-DNA	D:6	FALSE	105	31/12/2015		LP001-DNA_C6	tumournormal									
+LP001-DNA_E6	96 well plate	LP001-DNA	E:6	TRUE	105	31/12/2015		LP001-DNA_F6	tumournormal									
+LP001-DNA_F6	96 well plate	LP001-DNA	F:6	FALSE	105	31/12/2015		LP001-DNA_E6	tumournormal									
+LP001-DNA_G6	96 well plate	LP001-DNA	G:6	TRUE	105	31/12/2015		LP001-DNA_H6	tumournormal									
+LP001-DNA_H6	96 well plate	LP001-DNA	H:6	FALSE	105	31/12/2015		LP001-DNA_G6	tumournormal									
+LP001-DNA_A7	96 well plate	LP001-DNA	A:7	TRUE	105	31/12/2015		LP001-DNA_B7	tumournormal									
+LP001-DNA_B7	96 well plate	LP001-DNA	B:7	FALSE	105	31/12/2015		LP001-DNA_A7	tumournormal									
+LP001-DNA_C7	96 well plate	LP001-DNA	C:7	TRUE	105	31/12/2015		LP001-DNA_D7	tumournormal									
+LP001-DNA_D7	96 well plate	LP001-DNA	D:7	FALSE	105	31/12/2015		LP001-DNA_C7	tumournormal									
+LP001-DNA_E7	96 well plate	LP001-DNA	E:7	TRUE	105	31/12/2015		LP001-DNA_F7	tumournormal									
+LP001-DNA_F7	96 well plate	LP001-DNA	F:7	FALSE	105	31/12/2015		LP001-DNA_E7	tumournormal									
+LP001-DNA_G7	96 well plate	LP001-DNA	G:7	TRUE	105	31/12/2015		LP001-DNA_H7	tumournormal									
+LP001-DNA_H7	96 well plate	LP001-DNA	H:7	FALSE	105	31/12/2015		LP001-DNA_G7	tumournormal									
+LP001-DNA_A8	96 well plate	LP001-DNA	A:8	TRUE	105	31/12/2015		LP001-DNA_B8	tumournormal									
+LP001-DNA_B8	96 well plate	LP001-DNA	B:8	FALSE	105	31/12/2015		LP001-DNA_A8	tumournormal									
+LP001-DNA_C8	96 well plate	LP001-DNA	C:8	TRUE	105	31/12/2015		LP001-DNA_D8	tumournormal									
+LP001-DNA_D8	96 well plate	LP001-DNA	D:8	FALSE	105	31/12/2015		LP001-DNA_C8	tumournormal									
+LP001-DNA_E8	96 well plate	LP001-DNA	E:8	TRUE	105	31/12/2015		LP001-DNA_F8	tumournormal									
+LP001-DNA_F8	96 well plate	LP001-DNA	F:8	FALSE	105	31/12/2015		LP001-DNA_E8	tumournormal									
+LP001-DNA_G8	96 well plate	LP001-DNA	G:8	TRUE	105	31/12/2015		LP001-DNA_H8	tumournormal									
+LP001-DNA_H8	96 well plate	LP001-DNA	H:8	FALSE	105	31/12/2015		LP001-DNA_G8	tumournormal									
+LP001-DNA_A9	96 well plate	LP001-DNA	A:9	TRUE	105	31/12/2015		LP001-DNA_B9	tumournormal									
+LP001-DNA_B9	96 well plate	LP001-DNA	B:9	FALSE	105	31/12/2015		LP001-DNA_A9	tumournormal									
+LP001-DNA_C9	96 well plate	LP001-DNA	C:9	TRUE	105	31/12/2015		LP001-DNA_D9	tumournormal									
+LP001-DNA_D9	96 well plate	LP001-DNA	D:9	FALSE	105	31/12/2015		LP001-DNA_C9	tumournormal									
+LP001-DNA_E9	96 well plate	LP001-DNA	E:9	TRUE	105	31/12/2015		LP001-DNA_F9	tumournormal									
+LP001-DNA_F9	96 well plate	LP001-DNA	F:9	FALSE	105	31/12/2015		LP001-DNA_E9	tumournormal									
+LP001-DNA_G9	96 well plate	LP001-DNA	G:9	TRUE	105	31/12/2015		LP001-DNA_H9	tumournormal									
+LP001-DNA_H9	96 well plate	LP001-DNA	H:9	FALSE	105	31/12/2015		LP001-DNA_G9	tumournormal									
+LP001-DNA_A10	96 well plate	LP001-DNA	A:10	TRUE	105	31/12/2015		LP001-DNA_B10	tumournormal									
+LP001-DNA_B10	96 well plate	LP001-DNA	B:10	FALSE	105	31/12/2015		LP001-DNA_A10	tumournormal									
+LP001-DNA_C10	96 well plate	LP001-DNA	C:10	TRUE	105	31/12/2015		LP001-DNA_D10	tumournormal									
+LP001-DNA_D10	96 well plate	LP001-DNA	D:10	FALSE	105	31/12/2015		LP001-DNA_C10	tumournormal									
+LP001-DNA_E10	96 well plate	LP001-DNA	E:10	TRUE	105	31/12/2015		LP001-DNA_F10	tumournormal									
+LP001-DNA_F10	96 well plate	LP001-DNA	F:10	FALSE	105	31/12/2015		LP001-DNA_E10	tumournormal									
+LP001-DNA_G10	96 well plate	LP001-DNA	G:10	TRUE	105	31/12/2015		LP001-DNA_H10	tumournormal									
+LP001-DNA_H10	96 well plate	LP001-DNA	H:10	FALSE	105	31/12/2015		LP001-DNA_G10	tumournormal									
+LP001-DNA_A11	96 well plate	LP001-DNA	A:11	TRUE	105	31/12/2015		LP001-DNA_B11	tumournormal									
+LP001-DNA_B11	96 well plate	LP001-DNA	B:11	FALSE	105	31/12/2015		LP001-DNA_A11	tumournormal									
+LP001-DNA_C11	96 well plate	LP001-DNA	C:11	TRUE	105	31/12/2015		LP001-DNA_D11	tumournormal									
+LP001-DNA_D11	96 well plate	LP001-DNA	D:11	FALSE	105	31/12/2015		LP001-DNA_C11	tumournormal									
+LP001-DNA_E11	96 well plate	LP001-DNA	E:11	TRUE	105	31/12/2015		LP001-DNA_F11	tumournormal									
+LP001-DNA_F11	96 well plate	LP001-DNA	F:11	FALSE	105	31/12/2015		LP001-DNA_E11	tumournormal									
+LP001-DNA_G11	96 well plate	LP001-DNA	G:11	TRUE	105	31/12/2015		LP001-DNA_H11	tumournormal									
+LP001-DNA_H11	96 well plate	LP001-DNA	H:11	FALSE	105	31/12/2015		LP001-DNA_G11	tumournormal									
+LP001-DNA_A12	96 well plate	LP001-DNA	A:12	TRUE	105	31/12/2015		LP001-DNA_B12	tumournormal									
+LP001-DNA_B12	96 well plate	LP001-DNA	B:12	FALSE	105	31/12/2015		LP001-DNA_A12	tumournormal									
+LP001-DNA_C12	96 well plate	LP001-DNA	C:12	TRUE	105	31/12/2015		LP001-DNA_D12	tumournormal									
+LP001-DNA_D12	96 well plate	LP001-DNA	D:12	FALSE	105	31/12/2015		LP001-DNA_C12	tumournormal									
+LP001-DNA_E12	96 well plate	LP001-DNA	E:12	TRUE	105	31/12/2015		LP001-DNA_F12	tumournormal									
+LP001-DNA_F12	96 well plate	LP001-DNA	F:12	FALSE	105	31/12/2015		LP001-DNA_E12	tumournormal									
+LP001-DNA_G12	96 well plate	LP001-DNA	G:12	TRUE	105	31/12/2015		LP001-DNA_H12	tumournormal									
+LP001-DNA_H12	96 well plate	LP001-DNA	H:12	FALSE	105	31/12/2015		LP001-DNA_G12	tumournormal									
+</SAMPLE ENTRIES>																		
+																		
+"The purple tags define the start and end of the table header and the start and end of the sample entry area. These tags are required, but you can hide them in the final version of your spreadsheet."																		
+"The blue column header names are also required, but you can hide them in the final version of your spreadsheet (more details below)."																		
+																		
+The following column headers are required: Sample/Name and any sample-level UDFs that are required by your system administrator.																		
+"The following column header names cannot be changed: Sample/Name, Container/Type, Container/Name, and Sample/Well Location."																		
+																		
+Tips for Data Entry																		
+Dates should always be entered using Excel's date cell formatting.																		
+Currency is best entered as a string (rather than using the Excel currency category) in order to preserve currency characters (e.g. $).																		
+Numbers can be entered either as numeric or string values.																		
+"If you have drop-down lists of values in Clarity LIMS, the exact same values will need to be entered in the sample spreadsheet."																		
+Container well locations are always Row:Column and the actual dimensions depend on container type configuration in the Operations Interface.																		
+																		
+"As you can see in our example, the area above the sample entry area can be customized for your facility with freeform text and graphics."																		
+You can also insert columns and instructions to the left of or below the red tags.																		
+																		
+																		
+																		
+																		
+																		

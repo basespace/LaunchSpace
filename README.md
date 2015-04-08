@@ -349,16 +349,17 @@ GLOSSARY
 
 SampleApp status table:
 
-Status | Description
-waiting | Sample has been accessioned but not yet checked by Launcher OR sample has been checked but does not yet meet launch conditions
-submitted | App has been submitted to BaseSpace
-pending | App run is pending execution in BaseSpace
-running | App is running in BaseSpace
-launch-failed | App failed to launch. The error message can be seen with ListSampleApps.py -e
-run-failed | App failed whilst running
-app-finished | The app finished successfully
-qc-failed | The app result failed QC. Some details on the failure can be seen with ListSampleApps.py -e
-qc-passed | The app result passed QC
-downloading | The app result deliverable is currently being downloaded
+Status          | Description
+-------------   | -----------
+waiting         | Sample has been accessioned but not yet checked by Launcher OR sample has been checked but does not yet meet launch conditions
+submitted       | App has been submitted to BaseSpace
+pending         | App run is pending execution in BaseSpace
+running         | App is running in BaseSpace
+launch-failed   | App failed to launch. The error message can be seen with ListSampleApps.py -e
+run-failed      | App failed whilst running
+app-finished    | The app finished successfully
+qc-failed       | The app result failed QC. Some details on the failure can be seen with ListSampleApps.py -e
+qc-passed       | The app result passed QC
+downloading     | The app result deliverable is currently being downloaded
 download-failed | The app result failed while downloading. Some details on the failure can be seen with ListSampleApps.py -e
-downloaded | The app result has downloaded
+downloaded      | The app result has downloaded

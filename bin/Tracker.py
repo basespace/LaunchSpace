@@ -10,29 +10,49 @@ from collections import defaultdict
 # Add relative path libraries
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.abspath(os.path.sep.join([SCRIPT_DIR, "..", "lib"])))
+sys.path.append(os.path.abspath(os.path.sep.join([SCRIPT_DIR, "..", "..", "basespace-python-sdk", "src"])))
 
-import Repository
-import AppServices
-import SampleServices
-import ConfigurationServices
+from BaseSpacePy.api.BaseSpaceAPI import BaseSpaceAPI
 
-if __name__ == "__main__":
+from ConfigurationServices import ConfigurationServices
+from DataAccessRead import DataAccessRead
+from SampleServices import SampleServices
+from AppServices import AppServices
+
+
+def get_args():
     import argparse
+
     parser = argparse.ArgumentParser(description='update status of sample/apps')
     parser.add_argument('-i', '--id', type=str, dest="id", help='update just a specific SampleApp id')
-    parser.add_argument('-s', '--safe', dest="safe", default=False, action="store_true", help='safe mode - say what you would do without doing it')
-    parser.add_argument('-l', '--logtostdout', dest="logtostdout", default=False, action="store_true", help="log to stdout instead of default log file")
-    parser.add_argument("-L", "--loglevel", dest="loglevel", default="INFO", help="loglevel, default INFO. Choose from WARNING, INFO, DEBUG")
-    args = parser.parse_args()
+    parser.add_argument('-s', '--safe', dest="safe", default=False, action="store_true",
+                        help='safe mode - say what you would do without doing it')
+    parser.add_argument('-l', '--logtostdout', dest="logtostdout", default=False, action="store_true",
+                        help="log to stdout instead of default log file")
+    parser.add_argument("-L", "--loglevel", dest="loglevel", default="INFO",
+                        help="loglevel, default INFO. Choose from WARNING, INFO, DEBUG")
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = get_args()
+
+    baseSpaceAPI = BaseSpaceAPI()
+    configuration_services = ConfigurationServices()
+    db_config = configuration_services.get_config("DBFile")
+    data_access_read = DataAccessRead(db_config, configuration_services)
+    sample_services = SampleServices(baseSpaceAPI, configuration_services)
+    app_services = AppServices(baseSpaceAPI, sample_services, configuration_services, data_access_read)
 
     if args.safe or args.logtostdout:
-        logging.basicConfig(level=args.loglevel, format=ConfigurationServices.GetConfig("LogFormat"))
+        logging.basicConfig(level=args.loglevel, format=configuration_services.get_config("LogFormat"))
     else:
-        logfile = ConfigurationServices.GetConfig("TRACKER_LOG_FILE")
+        logfile = configuration_services.get_config("TRACKER_LOG_FILE")
         if not os.access(os.path.dirname(logfile), os.W_OK):
-            print "log directory: %s does not exist or is not writeable" % (logfile)
+            print "log directory: %s does not exist or is not writeable" % logfile
             sys.exit(1)
-        logging.basicConfig(filename=logfile, level=args.loglevel, format=ConfigurationServices.GetConfig("LogFormat"))
+        logging.basicConfig(filename=logfile, level=args.loglevel,
+                            format=configuration_services.get_config("LogFormat"))
     #logging.basicConfig(level=args.loglevel)
 
     pl = logging.getLogger("peewee")
@@ -41,40 +61,41 @@ if __name__ == "__main__":
     logging.debug("Starting tracker")
 
     if args.id:
-        sampleApps = [ Repository.GetSampleAppByID(opts.id) ]
+        sample_apps = [data_access_read.get_sample_app_by_id(args.id)]
     else:
         # get all the SampleApps with statuses that the Tracker will be able to update
         # these represent "live" statuses on BaseSpace
-        constraints = { "status" : [ "submitted", "pending", "running" ] }
-        sampleApps = Repository.GetSampleAppByConstraints(constraints)
-        logging.debug("Working on %i samples" % len(sampleApps))
+        constraints = {"status": ["submitted", "pending", "running"]}
+        sample_apps = data_access_read.get_sample_apps_by_constraints(constraints)
+        logging.debug("Working on %i samples" % len(sample_apps))
 
     # there's quite a lot code shared here with QCChecker.py, to iterate over SampleApps and update them
 
     # record what transitions we make (state -> state for each SampleApp) so we can report at the end
     # all SampleApps will end up in either "qc-failed" or "qc-passed" states
     transitions = defaultdict(list)
-    for sampleApp in sampleApps:
+    for sample_app in sample_apps:
         # unpack the SampleApp a little
-        sampleName = Repository.SampleAppToSampleName(sampleApp)
-        appName = Repository.SampleAppToAppName(sampleApp)
-        sampleAppId = Repository.SampleAppToBaseSpaceId(sampleApp)
-        logging.debug("working on: %s %s" % (sampleName, appName))
+        sample_name = sample_app.sample.name
+        app_name = sample_app.app.name
+        appsession_id = sample_app.basespaceid
+        logging.debug("working on: %s %s" % (sample_name, app_name))
 
-        if not sampleAppId:
-            logging.warn("No BaseSpace Id for SampleApp: %s" % Repository.SampleAppSummary(sampleApp))
+        if not appsession_id:
+            logging.warn("No BaseSpace Id for SampleApp: %s" % sample_app)
             continue
         # get the new status
-        newstatus = AppServices.GetAppStatus(sampleAppId)
+        newstatus = app_services.get_app_status(appsession_id)
         if args.safe:
-            logging.info("would update %s to: %s" % (Repository.SampleAppSummary(sampleApp), newstatus))
+            logging.info("would update %s to: %s" % (sample_app, newstatus))
         else:
             # record the transition and update in the db
-            transition = (Repository.SampleAppToStatus(sampleApp), newstatus)
-            Repository.SetSampleAppStatus(sampleApp, newstatus)
-            transitions[transition].append(sampleAppId)
+            transition = (sample_app.status, newstatus)
+            sample_app.set_status(newstatus)
+            transitions[transition].append(appsession_id)
 
-    # log how many of each transition we've made. If the number is low enough, report which apps have had each transition type
+    # log how many of each transition we've made.
+    # If the number is low enough, report which apps have had each transition type
     for transition in sorted(transitions):
         if len(transitions[transition]) > 40:
             logging.info("%s : %i" % (transition, len(transitions[transition])))

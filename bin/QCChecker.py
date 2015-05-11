@@ -57,7 +57,7 @@ if __name__ == "__main__":
             logging.warn("No BaseSpace Id for SampleApp: %s" % Repository.SampleAppSummary(sampleApp))
             continue
         # apply automated QC to the SampleApp and record the failures
-        failures = AppServices.ApplyAutomatedQCToAppResult(sampleApp)
+        failures = AppServices.apply_automated_qc_to_app_result(sampleApp)
         failuredetails = ";".join(failures)
         # use the failures to determine whether the SampleApp is qc-passed or not
         if failures:
@@ -71,7 +71,7 @@ if __name__ == "__main__":
             transition = (Repository.SampleAppToStatus(sampleApp), newstatus)
             # failuredetails will be a blank string if there are no failures
             Repository.SetSampleAppStatus(sampleApp, newstatus, failuredetails)
-            AppServices.SetQCResultInBaseSpace(sampleApp, newstatus, failuredetails)
+            AppServices.set_qc_result_in_basespace(sampleApp, newstatus, failuredetails)
             transitions[transition].append(sampleAppId)
 
     # log how many of each transition we've made. If the number is low enough, report which apps have had each transition type

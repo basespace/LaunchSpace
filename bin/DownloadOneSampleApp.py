@@ -38,7 +38,7 @@ if __name__ == "__main__":
         logging.debug("Downloading SampleApp: %s %s" % (Repository.SampleAppToSampleName(sampleApp), Repository.SampleAppToAppName(sampleApp)))
         attempt = 0
         MAX_ATTEMPTS = ConfigurationServices.GetConfig("MAX_ATTEMPTS")
-        AppServices.DownloadDeliverable(sampleApp)
+        AppServices.download_deliverable(sampleApp)
         Repository.SetSampleAppStatus(sampleApp, "downloaded")
     except Exception as e:
         Repository.SetSampleAppStatus(sampleApp, "download-failed", str(e))

@@ -1,0 +1,1 @@
+[{"Type": "string", "Name": "Input.AnnotationSource"}, {"Type": "string[]", "Name": "Input.FlagPCRDuplicates-id"}, {"Type": "string", "Name": "Input.genome-id"}, {"Type": "string", "Name": "Input.GQX-id"}, {"Type": "project", "Name": "Input.project-id"}, {"Type": "sample", "Name": "Input.sample-id"}, {"Type": "string", "Name": "Input.StrandBias-id"}]

@@ -11,14 +11,15 @@ import sys
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.abspath(os.path.sep.join([SCRIPT_DIR, "..", "lib"])))
 
-import DBOrm
-import ConfigurationServices
-
+from ConfigurationServices import ConfigurationServices
+from DataAccessLayer import DataAccessLayer
 
 if __name__ == "__main__":
-	DBFile = ConfigurationServices.GetConfig("DBFile")
-	if os.path.exists(DBFile):
-		print "DBFile already exists: %s" % (DBFile)
-		sys.exit(1)
+    configuration_services = ConfigurationServices()
+    db_file = configuration_services.get_config("DBFile")
+    if os.path.exists(db_file):
+        print "DBFile already exists: %s" % db_file
+        sys.exit(1)
+    data_access = DataAccessLayer(db_file, configuration_services)
 
-	DBOrm.create_tables()
+    data_access.create_tables()

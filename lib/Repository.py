@@ -23,7 +23,7 @@ class RepositoryException(Exception):
 
 # SampleApp
 
-# SampleApp direct members
+# SampleApp direct membersk
 
 def SampleAppToId(sampleApp):
     return sampleApp.id

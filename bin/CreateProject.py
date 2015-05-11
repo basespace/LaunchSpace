@@ -10,7 +10,9 @@ sys.path.append(os.path.abspath(os.path.sep.join([SCRIPT_DIR, "..", "lib"])))
 sys.path.append(os.path.abspath(os.path.sep.join([SCRIPT_DIR, "..", "..", "basespace-python-sdk", "src"])))
 
 from BaseSpacePy.api.BaseSpaceAPI import BaseSpaceAPI
-import Repository
+
+from ConfigurationServices import ConfigurationServices
+from DataAccessCreate import DataAccessCreate
 
 if __name__ == "__main__":
     import argparse
@@ -21,6 +23,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     baseSpaceAPI = BaseSpaceAPI()
+    configuration_services = ConfigurationServices()
+    db_config = configuration_services.get_config("DBFile")
+    data_access_create = DataAccessCreate(db_config, configuration_services)
 
     if not os.path.exists(args.path):
         print "must specify an output directory that already exists!"
@@ -29,4 +34,4 @@ if __name__ == "__main__":
     print "attempting to create/retrieve BaseSpace project"
     project = baseSpaceAPI.createProject(args.name)
     print "got Id: %s" % project.Id
-    Repository.AddProject(args.name, args.path, project.Id)
+    data_access_create.add_project(args.name, args.path, project.Id)

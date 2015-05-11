@@ -11,7 +11,9 @@ import sys
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.abspath(os.path.sep.join([SCRIPT_DIR, "..", "lib"])))
 
-import Repository
+from ConfigurationServices import ConfigurationServices
+from DataAccessCreate import DataAccessCreate
+
 
 if __name__ == "__main__":
     import argparse
@@ -21,5 +23,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    Repository.AddSampleApp(args.sample, args.app)
+    configuration_services = ConfigurationServices()
+    db_config = configuration_services.get_config("DBFile")
+    data_access_create = DataAccessCreate(db_config, configuration_services)
+
+    data_access_create.add_sample_app(args.sample, args.app)
 

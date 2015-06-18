@@ -61,7 +61,7 @@ if __name__ == "__main__":
         # keep track of the samples we build so we can report on them
         if sample:
             samples.add(sample)
-        data_access_create.add_sample_app(sample_name, app_name)
+        data_access_create.add_sample_app(sample_name, project_name, app_name)
         if args.related or args.relationship:
             if not args.related or not args.relationship:
                 print "to add a relationship need both related sample and relationship name"

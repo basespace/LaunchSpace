@@ -21,14 +21,13 @@ def get_args():
 
     parser = argparse.ArgumentParser(description='list sample apps with constraints and optionally update their status')
     # arguments that affect the query
-    parser.add_argument('-i', '--id', type=str, dest="id", help='just lookup a specific SampleApp id')
+    parser.add_argument('-i', '--id', type=str, dest="id", help='just lookup a specific ProtoApp id')
     parser.add_argument('-n', '--name', type=str, dest="name", help='filter by name of app')
     parser.add_argument('-p', '--project', type=str, dest="project", help='filter by name of project')
     parser.add_argument('-s', '--sample', type=str, dest="sample", help='filter by name of sample')
     parser.add_argument('-u', '--status', type=str, dest="status", help='filter by SampleApp status')
     parser.add_argument('-x', '--exact', dest="exact", action="store_true", default=False,
                         help='use exact matching of search terms')
-    parser.add_argument('-y', '--type', type=str, dest="type", help='filter by app type')
 
     # arguments that affect the way the results are reported
     parser.add_argument('-e', '--showdetails', dest="showdetails", action="store_true", default=False,
@@ -62,20 +61,20 @@ if __name__ == "__main__":
         constraints["sample"] = args.sample
     if args.status:
         constraints["status"] = [args.status]
-    if args.type:
-        constraints["type"] = args.type
+    if args.name:
+        constraints["name"] = args.name
     if args.id:
         constraints["id"] = args.id
 
-    sample_apps = data_access_read.get_sample_apps_by_constraints(constraints, args.exact)
+    proto_apps = data_access_read.get_proto_apps_by_constraints(constraints, args.exact)
 
-    for sample_app in sample_apps:
+    for proto_app in proto_apps:
         if args.newstatus:
-            if args.newstatus not in configuration_services.get_config("PERMITTED_CONFIG"):
+            if args.newstatus not in configuration_services.get_config("PERMITTED_STATUSES"):
                 print "invalid status: %s" % args.newstatus
                 sys.exit(1)
-            sample_app.set_status(args.newstatus)
+            proto_app.set_status(args.newstatus)
         elif args.delete:
-            sample_app.delete_instance()
+            proto_app.delete_instance()
             continue
-        print sample_app
+        print proto_app

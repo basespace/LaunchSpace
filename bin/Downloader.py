@@ -62,10 +62,10 @@ if __name__ == "__main__":
     logging.debug("Starting downloader")
 
     if args.id:
-        sample_apps = [data_access_read.get_sample_app_by_id(args.id)]
+        sample_apps = [data_access_read.get_proto_app_by_id(args.id)]
     else:
         constraints = {"status": ["qc-passed"]}
-        sample_apps = data_access_read.get_sample_apps_by_constraints(constraints)
+        sample_apps = data_access_read.get_proto_apps_by_constraints(constraints)
         logging.debug("Working on %i samples" % len(sample_apps))
 
     if not sample_apps:
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     # get the apps that are already downloading, so we can count them and make sure we don't have too many
     constraints = {"status": ["downloading"]}
-    downloading_sampleapps = data_access_read.get_sample_apps_by_constraints(constraints)
+    downloading_sampleapps = data_access_read.get_proto_apps_by_constraints(constraints)
     num_running_downloads = len(downloading_sampleapps)
     MAX_DOWNLOADS = configuration_services.get_config("MAX_DOWNLOADS")
     logging.info("There are currently %d downloads running (%d maximum allowed)" % (num_running_downloads, MAX_DOWNLOADS))

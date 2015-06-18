@@ -11,6 +11,7 @@ PERMITTED_STATUSES = set(
      "qc-passed", "downloading", "download-failed", "downloaded"])
 
 DEFAULT_STATUS = "waiting"
+APP_FINISHED_STATUS = "app-finished"
 
 # map BaseSpace status to our own internal status
 # I tried to use the BS app statuses from the Python SDK:
@@ -33,7 +34,7 @@ QC_NAMESPACE = "AutomatedQC"
 BaseSpaceHost = "http://api.cloud-hoth.illumina.com/"
 ApiVersion = "v1pre3"
 BaseSpaceBaseUri = urljoin(BaseSpaceHost, ApiVersion)
-BS_ENTITIES = ["sample", "project", "file"]
+BS_ENTITIES = ["sample", "project", "file", "appresult"]
 
 # 105 Gigabases for a 30X genome
 MinimumYield = 105000000000

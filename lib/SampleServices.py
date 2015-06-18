@@ -13,7 +13,7 @@ from BaseSpacePy.model.QueryParameters import QueryParameters
 from collections import defaultdict
 from memoize import memoized
 from operator import attrgetter
-
+from DependencyChecking import DependencyReadinessResult
 
 class SampleServices(object):
     NUMREADS_ATTR = "NumReadsPF"
@@ -116,12 +116,13 @@ class SampleServices(object):
         """
         yield_threshold = self._configuration_services.get_config("MinimumYield")
         if not self.sample_has_data(sample_name, project_id):
-            return False, "No data"
+            return DependencyReadinessResult(False, "No data")
         sample_yield = self.get_sample_yield(sample_name, project_id)
         if sample_yield > yield_threshold:
-            return True, None
+            return DependencyReadinessResult(True)
         else:
             if ignore_yield:
-                return True, "Ignoring low yield!"
-            return False, "Not enough yield (%d < %d)" % (sample_yield, yield_threshold)
+                return DependencyReadinessResult(True, "Ignoring low yield!")
+            msg = "Not enough yield (%d < %d)" % (sample_yield, yield_threshold)
+            return DependencyReadinessResult(False, msg)
 

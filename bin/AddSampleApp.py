@@ -20,6 +20,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Attach an app to an existing sample')
     parser.add_argument('-s', '--sample', type=str, dest="sample", required=True, help='name of sample')
     parser.add_argument('-a', '--app', type=str, dest="app", required=True, help='name of app')
+    parser.add_argument('-p', '--project', type=str, dest="project", require=True, help='name of project')
 
     args = parser.parse_args()
 
@@ -27,5 +28,5 @@ if __name__ == "__main__":
     db_config = configuration_services.get_config("DBFile")
     data_access_create = DataAccessCreate(db_config, configuration_services)
 
-    data_access_create.add_sample_app(args.sample, args.app)
+    data_access_create.add_sample_app(args.sample, args.project, args.app)
 

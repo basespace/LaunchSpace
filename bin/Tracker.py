@@ -61,37 +61,36 @@ if __name__ == "__main__":
     logging.debug("Starting tracker")
 
     if args.id:
-        sample_apps = [data_access_read.get_sample_app_by_id(args.id)]
+        proto_apps = [data_access_read.get_proto_app_by_id(args.id)]
     else:
         # get all the SampleApps with statuses that the Tracker will be able to update
         # these represent "live" statuses on BaseSpace
         constraints = {"status": ["submitted", "pending", "running"]}
-        sample_apps = data_access_read.get_sample_apps_by_constraints(constraints)
-        logging.debug("Working on %i samples" % len(sample_apps))
+        proto_apps = data_access_read.get_proto_apps_by_constraints(constraints)
+        logging.debug("Working on %i samples" % len(proto_apps))
 
     # there's quite a lot code shared here with QCChecker.py, to iterate over SampleApps and update them
 
     # record what transitions we make (state -> state for each SampleApp) so we can report at the end
     # all SampleApps will end up in either "qc-failed" or "qc-passed" states
     transitions = defaultdict(list)
-    for sample_app in sample_apps:
+    for proto_app in proto_apps:
         # unpack the SampleApp a little
-        sample_name = sample_app.sample.name
-        app_name = sample_app.app.name
-        appsession_id = sample_app.basespaceid
-        logging.debug("working on: %s %s" % (sample_name, app_name))
+        app_name = proto_app.app.name
+        appsession_id = proto_app.basespaceid
+        logging.debug("working on: %s" % proto_app)
 
         if not appsession_id:
-            logging.warn("No BaseSpace Id for SampleApp: %s" % sample_app)
+            logging.warn("No BaseSpace Id for SampleApp: %s" % proto_app)
             continue
         # get the new status
         newstatus = app_services.get_app_status(appsession_id)
         if args.safe:
-            logging.info("would update %s to: %s" % (sample_app, newstatus))
+            logging.info("would update %s to: %s" % (proto_app, newstatus))
         else:
             # record the transition and update in the db
-            transition = (sample_app.status, newstatus)
-            sample_app.set_status(newstatus)
+            transition = (proto_app.status, newstatus)
+            proto_app.set_status(newstatus)
             transitions[transition].append(appsession_id)
 
     # log how many of each transition we've made.

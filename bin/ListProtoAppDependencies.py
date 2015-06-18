@@ -16,8 +16,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('-n', '--name', type=str, dest="name", help='local name of app')
-    parser.add_argument('-j', '--json', dest="json", action="store_true", help='dump as json')
+    parser.add_argument('-i', '--id', type=str, dest="id", help='just lookup a specific ProtoApp id')
 
     args = parser.parse_args()
 
@@ -25,17 +24,13 @@ if __name__ == "__main__":
     db_config = configuration_services.get_config("DBFile")
     data_access_read = DataAccessRead(db_config, configuration_services)
 
-    if args.name:
-        apps = data_access_read.get_all_apps_by_substring(args.name)
-    else:
-        apps = data_access_read.get_all_apps()
+    constraints = {}
+    if args.id:
+        constraints["id"] = args.id
 
-    allapps = []
-    for app in apps:
-        if args.json:
-            allapps.append(app.to_dict())
-        else:
-            print app
-            print "==="
+    proto_apps = data_access_read.get_proto_apps_by_constraints(constraints)
 
-    print json.dumps(allapps)
+    for proto_app in proto_apps:
+        dependencies = proto_app.get_dependencies()
+        for dependency in dependencies:
+            print dependency

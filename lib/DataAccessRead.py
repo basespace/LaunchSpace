@@ -2,7 +2,7 @@ __author__ = 'psaffrey'
 
 from memoize import memoized
 import DataAccessLayer
-from DataAccessORM import Sample, Project, App, SampleApp, SampleRelationship, BaseModel
+from DataAccessORM import Sample, Project, App, ProtoApp, ProtoAppDependency, SampleRelationship, BaseModel
 from peewee import DoesNotExist, JOIN_LEFT_OUTER
 
 
@@ -28,13 +28,16 @@ class DataAccessRead(DataAccessLayer.DataAccessLayer):
                 query = query.where(match_object % self._make_like_string(query_term))
         return query
 
-    def get_all_projects(self):
+    @staticmethod
+    def get_all_projects():
         return [project for project in Project.select()]
 
-    def get_all_samples(self):
+    @staticmethod
+    def get_all_samples():
         return [sample for sample in Sample.select()]
 
-    def get_all_samples_with_relationships(self):
+    @staticmethod
+    def get_all_samples_with_relationships():
         # the big select and join here is important,
         # because it means all the foreign key relationships are prepacked into the returned peewee objects
         # otherwise, peewee will make separate queries to resolve foreign key connections
@@ -49,8 +52,12 @@ class DataAccessRead(DataAccessLayer.DataAccessLayer):
         except DataAccessLayer.DBMissingException:
             return False
 
-    def get_all_apps(self):
+    @staticmethod
+    def get_all_apps():
         return [app for app in App.select()]
+
+    def get_all_app_names(self):
+        return [x.name for x in self.get_all_apps()]
 
     def has_app(self, app_name):
         try:
@@ -59,32 +66,30 @@ class DataAccessRead(DataAccessLayer.DataAccessLayer):
         except DataAccessLayer.DBMissingException:
             return False
 
-    def get_sample_app_mapping(self):
-        # we need to join here to convert IDs to names.
-        # the peewee syntax is pretty gnarly. Hopefully it makes the query efficient
-        # http://peewee.readthedocs.org/en/latest/peewee/querying.html#joining-on-multiple-tables
-        query = SampleApp.select().join(Sample).switch(SampleApp).join(App)
-        return [(row.sample.name, row.app.name) for row in query]
-
-    def get_sample_app_by_id(self, sample_app_id):
+    @staticmethod
+    def get_proto_app_by_id(proto_app_id):
         try:
-            return SampleApp.get(SampleApp.id == sample_app_id)
+            return ProtoApp.get(ProtoApp.id == proto_app_id)
         except DoesNotExist:
-            raise DataAccessLayer.DBMissingException("missing SampleApp: %s" % sample_app_id)
+            raise DataAccessLayer.DBMissingException("missing ProtoApp: %s" % proto_app_id)
 
-    def get_sample_apps_by_constraints(self, constraints, exact=False):
+    def get_proto_apps_by_constraints(self, constraints, exact=False):
         # if we've selected by a particular ID, we don't need to check the other constraints
         if "id" in constraints:
-            return [self.get_sample_app_by_id(constraints["id"])]
+            return [self.get_proto_app_by_id(constraints["id"])]
         # if we join here then it pulls down all the foreign key connections into the objects
         # this prevents excessive object dereference queries occuring in any downstream code
         # the peewee syntax is pretty gnarly. Hopefully it makes the query efficient
         # http://peewee.readthedocs.org/en/latest/peewee/querying.html#joining-on-multiple-tables
-        query = (SampleApp.select(Sample, Project, SampleApp, App)
-                 .join(Sample)
+        query = (ProtoApp.select(Project, ProtoApp, App, ProtoAppDependency, Sample)
                  .join(Project)
-                 .switch(SampleApp)
-                 .join(App))
+                 .switch(ProtoApp)
+                 .join(App)
+                 .switch(ProtoApp)
+                 .join(ProtoAppDependency)
+                 .join(Sample, JOIN_LEFT_OUTER)
+                 .group_by(ProtoApp)
+        )
         # a fair amount of repetition here
         # but I decided I preferred this to a more convoluted generic mechanism
         if "project" in constraints:
@@ -94,17 +99,16 @@ class DataAccessRead(DataAccessLayer.DataAccessLayer):
             query_field = Sample.name
             query = self._augment_query(query, query_field, constraints["sample"], exact)
         if "status" in constraints:
-            query_field = SampleApp.status
+            query_field = ProtoApp.status
             query = self._augment_query(query, query_field, constraints["status"], exact)
-        if "type" in constraints:
-            query_field = App.type
-            query = self._augment_query(query, query_field, constraints["type"], exact)
         if "name" in constraints:
             query_field = App.name
             query = self._augment_query(query, query_field, constraints["name"], exact)
 
         return [x for x in query]
 
+    ######
+    # Possibly this should be part of the sample object in ORM...
     @staticmethod
     def get_sample_relationships(sample):
         try:
@@ -115,6 +119,8 @@ class DataAccessRead(DataAccessLayer.DataAccessLayer):
         except:
             raise DataAccessLayer.DBMissingException("sample relationship could not be found")
 
+    ######
+    # Possibly this should be part of the sample object in ORM...
     def get_normal_from_tumour(self, sample_name):
         sample = self.get_sample_by_name(sample_name)
         sr = SampleRelationship.get(
@@ -135,3 +141,19 @@ class DataAccessRead(DataAccessLayer.DataAccessLayer):
         with self.database.transaction():
             for sample in samples:
                 print self.get_sample_summary(sample)
+
+    def get_all_apps_by_substring(self, app_substr):
+        like_str = self._make_like_string(app_substr)
+        all_matches_query = App.select().where(App.name % like_str)
+        return [x for x in all_matches_query]
+
+    def get_one_app_by_substring(self, app_substr):
+        all_matches = self.get_all_apps_by_substring(app_substr)
+        if len(all_matches) == 0:
+            raise DataAccessLayer.DBMissingException("Found no apps!")
+        elif len(all_matches) > 1:
+            all_app_names = ",".join([str(x.name) for x in all_matches])
+            raise DataAccessLayer.DBFormatException(
+                "Found too many apps matching %s (%s): be more specific!" % (app_substr, all_app_names))
+        else:
+            return all_matches[0]

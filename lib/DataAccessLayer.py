@@ -15,7 +15,20 @@ Currently only supports SQLite databases - it takes a file to build the proper o
 from peewee import *
 import datetime
 
-from DataAccessORM import Sample, Project, App, SampleApp, SampleRelationship, BaseModel, sqlite_database
+from DataAccessORM import Sample, Project, App, AppQCAndDelivery, AppConsumes, AppSupplies, ProtoApp, \
+    ProtoAppDependency, SampleRelationship, BaseModel, sqlite_database
+
+ALL_TABLES = [
+    Sample,
+    Project,
+    App,
+    AppQCAndDelivery,
+    AppConsumes,
+    AppSupplies,
+    ProtoApp,
+    ProtoAppDependency,
+    SampleRelationship
+]
 
 
 class DBException(Exception):
@@ -35,9 +48,9 @@ class DBFormatException(DBException):
 
 
 class DataAccessLayer(object):
-    UPDATE_TRIGGER = """create trigger set_lastupdated after update on SampleApp
+    UPDATE_TRIGGER = """create trigger set_lastupdated after update on ProtoApp
      begin
-        update SampleApp set lastupdated = datetime('NOW') where id = new.id;
+        update ProtoApp set lastupdated = datetime('NOW') where id = new.id;
     end;"""
 
     DEFAULT_STATUS = ""
@@ -46,11 +59,18 @@ class DataAccessLayer(object):
     def __init__(self, database_path, cs):
         self._database_path = database_path
         self._configuration_service = cs
+        self.initialise_database()
+        self.DEFAULT_STATUS = cs.get_config("DEFAULT_STATUS")
+        self.PERMITTED_STATUSES = cs.get_config("PERMITTED_STATUSES")
+
+    def initialise_database(self):
         # initialise database from ORM database global variable
         self.database = sqlite_database
         self.database.init(self._database_path)
-        self.DEFAULT_STATUS = cs.get_config("DEFAULT_STATUS")
-        self.PERMITTED_STATUSES = cs.get_config("PERMITTED_STATUSES")
+        if self.database.execute_sql('PRAGMA foreign_keys').fetchone() is None:
+            self.database.close()
+            raise RuntimeError('Your installed version of SQLite does not support foreign keys.')
+        self.database.execute_sql('PRAGMA foreign_keys = ON')
 
     def create_tables(self):
         """
@@ -59,8 +79,7 @@ class DataAccessLayer(object):
         """
         print "instantiating into file: %s" % self._database_path
         self.database.connect()
-        self.database.create_tables(
-            [Sample, Project, App, SampleApp, SampleRelationship])
+        self.database.create_tables(ALL_TABLES)
         cursor = self.database.get_cursor()
         print "adding update trigger..."
         cursor.execute(self.UPDATE_TRIGGER)

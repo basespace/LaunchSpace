@@ -33,6 +33,6 @@ if __name__ == "__main__":
     sample_services = SampleServices(baseSpaceAPI, configuration_services)
     app_services = AppServices(baseSpaceAPI, sample_services, configuration_services, data_access_read)
 
-    sample_app = data_access_read.get_sample_app_by_id(args.id)
+    sample_app = data_access_read.get_proto_app_by_id(args.id)
 
     print app_services.simulate_launch(sample_app)

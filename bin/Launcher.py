@@ -64,40 +64,40 @@ if __name__ == "__main__":
     logging.debug("Starting launcher")
 
     if args.id:
-        sample_apps = [data_access_read.get_sample_app_by_id(args.id)]
+        proto_apps = [data_access_read.get_proto_app_by_id(args.id)]
     else:
         # get all the SampleApps with the waiting status
         constraints = {"status": "waiting"}
         logging.debug("Finding samples")
-        sample_apps = data_access_read.get_sample_apps_by_constraints(constraints)
-        logging.debug("working on %d samples" % len(sample_apps))
+        proto_apps = data_access_read.get_proto_apps_by_constraints(constraints)
+        logging.debug("working on %d ProtoApps" % len(proto_apps))
 
-    for sample_app in sample_apps:
+    for proto_app in proto_apps:
+        logging.debug("working on ProtoApp: %s" % proto_app)
         # unpack the SampleApp a little
-        sample_name = sample_app.sample.name
-        app_name = sample_app.app.name
+        app_name = proto_app.app.name
         # check whether the SampleApp is ready to launch, including getting a reason if it isn't ready
-        ready, reason = AppServices.check_conditions_on_sample_app(sample_app, args.ignoreyield)
+        readiness_result = app_services.check_conditions_on_proto_app(proto_app, args.ignoreyield)
         newstatus = ""
         details = ""
-        if ready:
+        if readiness_result:
             if args.safe:
-                logging.info("would launch: %s" % sample_app)
-                logging.debug(app_services.simulate_launch(sample_app))
+                logging.info("would launch: %s" % proto_app)
+                logging.debug(app_services.simulate_launch(proto_app))
             else:
                 # if we're ready, configure and launch
-                logging.info("launching: %s" % sample_app)
-                appSessionId = app_services.configure_and_launch_app(sample_app)
+                logging.info("launching: %s" % proto_app)
+                appSessionId = app_services.configure_and_launch_app(proto_app)
                 logging.info("got app session id: %s" % appSessionId)
-                sample_app.set_appsession_id(appSessionId)
+                proto_app.set_appsession_id(appSessionId)
                 newstatus = "submitted"
                 details = "submission time: %s" % datetime.datetime.now()
         else:
             newstatus = "waiting"
-            details = reason
-            logging.debug("cannot launch: %s" % reason)
+            details = readiness_result.details
+            logging.debug("cannot launch: %s" % details)
         if not args.safe:
             # this will only set the status if something has changed
-            sample_app.set_status(newstatus, details)
+            proto_app.set_status(newstatus, details)
 
     logging.debug("Finished launcher")

@@ -40,11 +40,16 @@ BS_ENTITIES = ["sample", "project", "file", "appresult"]
 MinimumYield = 105000000000
 #MinimumYield = 0
 
-DBFile = os.path.join(SCRIPT_DIR, "../data/db.sqlite")
+#DBFile = os.path.join(SCRIPT_DIR, "../data/db.sqlite")
+# I know os.getenv does not work on Windows; 
+# I'm just assuming LaunchSpace isn't of interest there.
+BASESPACE_BASE = os.path.join(os.getenv("HOME"), ".basespace")
+DBFile = os.path.join(BASESPACE_BASE, "LaunchSpace.db")
 
 # logging
 LogFormat = "%(asctime)s|%(levelname)s|%(message)s"
-LOG_BASE = os.path.join(SCRIPT_DIR, "..", "log")
+#LOG_BASE = os.path.join(SCRIPT_DIR, "..", "log")
+BASESPACE_BASE = LOG_BASE
 LAUNCHER_LOG_FILE = os.path.join(LOG_BASE, "launcher.log")
 TRACKER_LOG_FILE = os.path.join(LOG_BASE, "tracker.log")
 QCCHECKER_LOG_FILE = os.path.join(LOG_BASE, "qcchecker.log")

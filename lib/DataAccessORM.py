@@ -118,6 +118,20 @@ class App(BaseModel):
         except:
             return None
 
+    def to_dict(self):
+        base_dict = get_dictionary_from_model(self)
+        inputs = self.get_inputs()
+        outputs = self.get_outputs()
+        # this is just adding a description (type) to the input
+        base_dict["inputdetails"] = dict((input_.name, input_.description) for input_ in inputs if input_.description)
+        if outputs:
+            base_dict["outputs"] = [output.to_dict() for output in outputs]
+        return base_dict
+
+    def get_as_function_summary(self):
+        params = self.get_inputs()
+        return "%s(%s)" % (self.name, ", ".join(params))
+
     def __str__(self):
         reported_parts = ["app: %s (%s)" % (self.name, self.basespaceid),
                           "properties: %s" % str(self.properties),

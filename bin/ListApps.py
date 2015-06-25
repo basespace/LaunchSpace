@@ -18,6 +18,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('-n', '--name', type=str, dest="name", help='local name of app')
     parser.add_argument('-j', '--json', dest="json", action="store_true", help='dump as json')
+    parser.add_argumnet('-f', '--asfunctions', dest="asfunctions", action="store_true", help='output the specification the app provides to WorkflowBuilder objects')
 
     args = parser.parse_args()
 
@@ -34,8 +35,11 @@ if __name__ == "__main__":
     for app in apps:
         if args.json:
             allapps.append(app.to_dict())
+        elif args.asfunctions:
+            print app.get_as_function()
         else:
             print app
             print "==="
 
-    print json.dumps(allapps)
+    if args.json:
+        print json.dumps(allapps)

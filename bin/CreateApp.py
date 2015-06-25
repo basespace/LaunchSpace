@@ -61,22 +61,7 @@ if __name__ == "__main__":
     if args.jsonfile:
         with open(args.jsonfile) as fh:
             allapps = json.load(fh)
-            for app in allapps:
-                app_obj = data_access_create.add_app(
-                    app_name=app["name"],
-                    app_properties=app["properties"],
-                    app_defaults=app["defaults"],
-                    input_details=app["inputdetails"],
-                    basespace_id=app["basespaceid"]
-                )
-                if "outputs" in app:
-                    data_access_create.add_app_output_description(
-                        app=app_obj,
-                        output_name=outputs["outputname"], 
-                        output_type=outputs["outputtype"],
-                        result_name=outputs["resultname"], 
-                        path_glob=outputs["pathglob"]
-                        )
+            data_access_create.add_apps_from_blob(allapps)
     elif args.properties:
         properties = validate_json_file(args.properties)
         defaults = validate_json_file(args.defaults)

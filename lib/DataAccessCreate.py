@@ -29,6 +29,25 @@ class DataAccessCreate(DataAccessLayer.DataAccessLayer):
     # App-related
     #######
 
+    def add_apps_from_blob(self, app_blob):
+        for app in app_blob:
+            app_obj = self.add_app(
+                app_name=app["name"],
+                app_properties=app["properties"],
+                app_defaults=app["defaults"],
+                input_details=app["inputdetails"],
+                basespace_id=app["basespaceid"]
+            )
+            if "outputs" in app:
+                self.add_app_output_description(
+                    app=app_obj,
+                    output_name=outputs["outputname"], 
+                    output_type=outputs["outputtype"],
+                    result_name=outputs["resultname"], 
+                    path_glob=outputs["pathglob"]
+                    )
+
+
     def add_app(self, app_name, app_properties, app_defaults, input_details, basespace_id):
         try:
             app = App.create(

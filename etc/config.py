@@ -49,7 +49,7 @@ DBFile = os.path.join(BASESPACE_BASE, "LaunchSpace.db")
 # logging
 LogFormat = "%(asctime)s|%(levelname)s|%(message)s"
 #LOG_BASE = os.path.join(SCRIPT_DIR, "..", "log")
-BASESPACE_BASE = LOG_BASE
+LOG_BASE = BASESPACE_BASE
 LAUNCHER_LOG_FILE = os.path.join(LOG_BASE, "launcher.log")
 TRACKER_LOG_FILE = os.path.join(LOG_BASE, "tracker.log")
 QCCHECKER_LOG_FILE = os.path.join(LOG_BASE, "qcchecker.log")

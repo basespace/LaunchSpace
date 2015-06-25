@@ -130,7 +130,10 @@ class App(BaseModel):
 
     def get_as_function_summary(self):
         params = self.get_inputs()
-        return "%s(%s)" % (self.name, ", ".join(params))
+        input_str = ", ".join((str(x) for x in params)) 
+        outputs = self.get_outputs()
+        output_str = ", ".join((str(x) for x in outputs))
+        return "%s(%s) -> %s" % (self.get_flat_name(), input_str, output_str) 
 
     def __str__(self):
         reported_parts = ["app: %s (%s)" % (self.name, self.basespaceid),
@@ -193,10 +196,13 @@ class AppConsumes(BaseModel):
         )
 
     def __str__(self):
+        typestr = self.type
+        if self.islistproperty:
+            typestr += "[]" 
         if self.description:
-            return "%s (%s: %s)" % (self.name, self.type, self.description)
+            return "%s (%s: %s)" % (self.name, typestr, self.description)
         else:
-            return "%s (%s)" % (self.name, self.type)
+            return "%s (%s)" % (self.name, typestr)
 
 
 class AppSupplies(BaseModel):
